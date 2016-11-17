@@ -31,3 +31,16 @@
 
 # "temporary" build files
 /target
+.classpath
+.idea/
+.project
+.slcache/
+grailsw
+grailsw.bat
+lib/
+onlineshopping-grailsPlugins.iml
+rrms-grailsPlugins.iml
+rrmsrest-grailsPlugins.iml
+rrmsrest.iml
+web-app/
+wrapper/
