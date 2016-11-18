@@ -17,8 +17,11 @@ class UserController{
     }
 
     /**
-     * creates a new user
-     * @param cmd
+     * Creates a new user
+     * @param cmd User information:
+     *                              username:   unique identifier for this user
+     *                              name:       full name of the user
+     *                              password:   password for this user
      * @return
      */
     def create(UserCommand cmd){

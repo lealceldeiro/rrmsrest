@@ -2,12 +2,12 @@ package security
 
 class EUser {
 
-    String usernme
+    String username
     String name
     String password
 
     static constraints = {
-        usernme nullable: false, unique: true
+        username nullable: false, unique: true
         name nullable: false, blank: false
         password nullable: false, blank: false
     }

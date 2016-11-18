@@ -1,7 +1,7 @@
 package rrmsrest
 
 import grails.test.mixin.TestFor
-import onlineshopping.UserService
+import security.UserService
 import spock.lang.Specification
 
 /**

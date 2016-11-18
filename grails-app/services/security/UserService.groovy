@@ -1,8 +1,7 @@
-package onlineshopping
+package security
 
 import command.security.UserCommand
 import grails.transaction.Transactional
-import security.EUser
 
 @Transactional
 class UserService {
