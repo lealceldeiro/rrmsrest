@@ -2,8 +2,10 @@ class UrlMappings {
 
 	static mappings = {
 
-        "/user/list"(controller: "UserController", action: "list")
+        "/user/search"(controller: "UserController", action: "search")
         "/user/create"(controller: "UserController", action: "create")
+
+        "/role/search"(controller: "RoleController", action: "search")
 
 
         "/$controller/$action?/$id?(.$format)?"{
