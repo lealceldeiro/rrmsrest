@@ -6,6 +6,8 @@ class UrlMappings {
         "/user/create"(controller: "UserController", action: "create")
 
         "/role/search"(controller: "RoleController", action: "search")
+        "/role/save"(controller: "RoleController", action: "save")
+        "/role/delete"(controller: "RoleController", action: "delete")
 
 
         "/$controller/$action?/$id?(.$format)?"{
