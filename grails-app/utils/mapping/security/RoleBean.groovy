@@ -1,4 +1,4 @@
-package mapping
+package mapping.security
 
 /**
  * Created by Asiel on 11/18/2016.

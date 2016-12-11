@@ -1,7 +1,7 @@
 package security
 
 import command.security.RoleCommand
-import mapping.RoleBean
+import mapping.security.RoleBean
 
 import grails.transaction.Transactional
 
