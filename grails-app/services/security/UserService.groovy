@@ -1,6 +1,6 @@
 package security
 
-import command.security.UserCommand
+import command.security.user.UserCommand
 import mapping.security.UserBean
 
 import grails.transaction.Transactional

@@ -1,4 +1,4 @@
-package command.security
+package command.security.role
 
 import grails.validation.Validateable
 import security.ERole

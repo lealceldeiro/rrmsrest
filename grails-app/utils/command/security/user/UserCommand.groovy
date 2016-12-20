@@ -1,4 +1,4 @@
-package command.security
+package command.security.user
 
 import grails.validation.Validateable
 import security.EUser

@@ -1,6 +1,7 @@
 package security
 
-import command.security.RoleCommand
+import command.SearchCommand
+import command.security.role.RoleCommand
 import grails.converters.JSON
 import org.springframework.http.HttpMethod
 
@@ -19,13 +20,16 @@ class RoleController {
      * Searches for roles which match with the specified params
      * @return Roles
      */
-    def search() {
+    def search(SearchCommand cmd) {
         def body = ['success': false]
-        def roles = roleService.search(params)
+        if(cmd.validate()){
+            def result = roleService.search(cmd, params)
 
-        body.success = true
-        body.total = roles.size()
-        body.items = roles
+            body.success = true
+            body.total = result['total']
+            body.items = result['items']
+        }
+
 
         render body as JSON
     }

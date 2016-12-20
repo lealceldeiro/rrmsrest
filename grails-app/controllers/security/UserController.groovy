@@ -1,6 +1,6 @@
 package security
 
-import command.security.UserCommand
+import command.security.user.UserCommand
 import grails.converters.JSON
 import org.springframework.http.HttpMethod
 

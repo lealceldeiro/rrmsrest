@@ -1,6 +1,7 @@
 package security
 
-import command.security.RoleCommand
+import command.SearchCommand
+import command.security.role.RoleCommand
 import mapping.security.RoleBean
 
 import grails.transaction.Transactional
@@ -8,14 +9,28 @@ import grails.transaction.Transactional
 @Transactional
 class RoleService {
 
-    def search(Map params) {
-        def roles = ERole.list(params)
+    def search(SearchCommand cmd, Map params) {
+        Map response = [:]
+
+        def list = ERole.createCriteria().list(params) {
+            order("active", "desc")
+            if(cmd.criteria) {
+                or{
+                    ilike("label", "%${cmd.criteria}%")
+                    ilike("description", "%${cmd.criteria}%")
+                }
+            }
+
+        }
+
         def mapped = [];
-        roles.each {
+        list.each {
             mapped << new RoleBean(id: it.id, label: it.label, description: it.description, active: it.active)
         }
 
-        return mapped
+        response.items = mapped
+        response.total = list.totalCount
+        return response
     }
 
     def save(RoleCommand cmd, long id) {
