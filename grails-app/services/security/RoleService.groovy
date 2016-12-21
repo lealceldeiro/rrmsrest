@@ -69,6 +69,7 @@ class RoleService {
             aux.save flush: true
             return aux
         }
+        //todo: inform about the error
         return false
     }
 
@@ -85,6 +86,7 @@ class RoleService {
                 return new RoleBean(id: i.id, label: i.label, description: i.description, active: i.active)
             }
         }
+        //todo: inform about the error
         return false
     }
 
@@ -99,6 +101,7 @@ class RoleService {
             e.delete();
             return true
         }
+        //todo: inform about the error
         return false
     }
 }
