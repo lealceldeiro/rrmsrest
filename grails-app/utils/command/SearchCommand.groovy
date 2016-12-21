@@ -7,9 +7,12 @@ import grails.validation.Validateable
  */
 @Validateable
 class SearchCommand {
-    String criteria
+    /**
+     * Criteria for searching role(s)
+     */
+    String q
 
     static constraints = {
-        criteria nullable: true, blank: false
+        q nullable: true, blank: false
     }
 }

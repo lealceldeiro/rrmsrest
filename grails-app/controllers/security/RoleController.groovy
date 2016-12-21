@@ -72,7 +72,7 @@ class RoleController {
 
     /**
      * Deletes a Role
-     * @param id Role's idetifier
+     * @param id Role's identifier
      * @return
      */
     def delete(long id){
