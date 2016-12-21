@@ -75,8 +75,7 @@ class RoleService {
     /**
      * Shows some role info
      * @param id Identifier of the role that is going to be shown
-     * @return A json containing the role's info if the operation was successful with the following structure
-     * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
+     * @return A RoleBean entity with the role's info or false if none user is found
      */
     def show (long id){
         def e = Optional.ofNullable(ERole.get(id))
@@ -92,8 +91,7 @@ class RoleService {
     /**
      * Deletes some role's info
      * @param id Identifier of the role that is going to be deleted
-     * @return A json indicting whether the operation was successful with the following structure
-     * <p><code>{success: true|false}</code></p>
+     * @return <code>true</code> or <code>false</code> depending on the result of the operation
      */
     def delete(long id) {
         def e = ERole.get(id);
