@@ -11,9 +11,9 @@ class RoleController {
 
     static allowedMethods = [
             search  : HttpMethod.GET.name(),
-            save  : HttpMethod.POST.name(),
-            show  : HttpMethod.GET.name(),
-            delete  : HttpMethod.POST.name()
+            save    : HttpMethod.POST.name(),
+            show    : HttpMethod.GET.name(),
+            delete  : HttpMethod.DELETE.name()
     ]
 
     /**

@@ -2,15 +2,15 @@ class UrlMappings {
 
 	static mappings = {
 
-        "/user/search"(controller: "UserController", action: "search")
-        "/user/save"(controller: "UserController", action: "save")
-        "/user/delete"(controller: "UserController", action: "delete")
-        "/user/show"(controller: "UserController", action: "show")
+        "/user/search"                          (controller: "UserController", action: "search")
+        "/user/save/$id"                            (controller: "UserController", action: "save")
+        "/user/delete/$id"                      (controller: "UserController", action: "delete")
+        "/user/show/$id"                        (controller: "UserController", action: "show")
 
-        "/role/search"(controller: "RoleController", action: "search")
-        "/role/save"(controller: "RoleController", action: "save")
-        "/role/delete"(controller: "RoleController", action: "delete")
-        "/role/show"(controller: "RoleController", action: "show")
+        "/role/search"                          (controller: "RoleController", action: "search")
+        "/role/save/$id"                            (controller: "RoleController", action: "save")
+        "/role/delete/$id"                      (controller: "RoleController", action: "delete")
+        "/role/show/$id"                        (controller: "RoleController", action: "show")
 
 
         "/$controller/$action?/$id?(.$format)?"{

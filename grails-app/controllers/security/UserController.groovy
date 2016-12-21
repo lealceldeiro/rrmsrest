@@ -13,7 +13,7 @@ class UserController{
             search  : HttpMethod.GET.name(),
             save  : HttpMethod.POST.name(),
             show  : HttpMethod.GET.name(),
-            delete  : HttpMethod.POST.name()
+            delete  : HttpMethod.DELETE.name()
     ]
 
     /**
