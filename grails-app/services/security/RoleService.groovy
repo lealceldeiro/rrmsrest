@@ -60,7 +60,6 @@ class RoleService {
                 aux = e;
             }
             else{
-                aux.id = e.id;
                 aux.active = e.active;
                 aux.description = e.description;
                 aux.label = e.label;
