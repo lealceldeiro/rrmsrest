@@ -51,25 +51,24 @@ class RoleService {
      */
     def save(RoleCommand cmd, long id) {
         ERole e = cmd()
-        if(e.validate()){
-            ERole aux = null;
-            if(id != null){
-                aux = ERole.get(id)
-            }
-            if(!aux){
-                aux = e;
-            }
-            else{
-                aux.active = e.active;
-                aux.description = e.description;
-                aux.label = e.label;
-            }
+        ERole aux
 
-            aux.save flush: true
-            return aux
+        if(id != null){ //edit
+            aux = ERole.get(id)
+            aux.active = e.active;
+            aux.description = e.description;
+            aux.label = e.label;
         }
-        //todo: inform about the error
-        return false
+        else if (e.validate()){ //create
+            aux = e;
+        }
+        else{
+            //todo: inform about the error
+            return false
+        }
+
+        aux.save flush: true
+        return aux
     }
 
     /**
