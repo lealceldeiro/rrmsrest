@@ -16,11 +16,13 @@ class RoleCommand {
 
     static constraints = {
         label nullable: false, blank: false
-        active nullable: false
+        active nullable: true
+        description nullable: true
     }
 
     def call(){
-        ERole e = new ERole(label: label, description: description, active: active)
+        ERole e = new ERole(label: label, description: description ? description : "security.role.no_description",
+                active: active ? active : false)
         e.id = id
         return e
     }
