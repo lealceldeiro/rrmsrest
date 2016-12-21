@@ -8,6 +8,5 @@ class ERole {
 
     static constraints = {
         label unique: true
-        description
     }
 }
