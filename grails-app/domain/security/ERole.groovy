@@ -7,6 +7,8 @@ class ERole {
     boolean active
 
     static constraints = {
-        label unique: true
+        label nullable: false, blank: false, unique: true
+        active nullable: true
+        description nullable: true
     }
 }
