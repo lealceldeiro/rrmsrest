@@ -93,11 +93,17 @@ class UserService {
             int s = cmd.roles.size()
             if(aux.roles) {
                 int sr = aux.roles.size()
-                def ro;
-                for (int i = 0; i < sr; i++) {
-                    ro = aux.roles[i];
-                    if (!cmd.roles.contains(ro.role.id)) {
-                        EUser_Role.removeRole(ro)
+                if(sr > 0){
+                    def ro;
+                    List<ERole> deleteList = []
+                    for (int i = 0; i < sr; i++) {
+                        ro = aux.roles[i];
+                        if (!cmd.roles.contains(ro.role.id)) {
+                            deleteList.add(ro.role)
+                        }
+                    }
+                    if(deleteList.size() > 0){
+                        EUser_Role.removeRoles(aux, deleteList)
                     }
                 }
             }

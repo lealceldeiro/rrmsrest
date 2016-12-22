@@ -29,8 +29,11 @@ class EUser_Role implements Serializable{
         e.save(flush: true, insert: true)
     }
 
-    static def removeRole(EUser_Role obj){
-        executeUpdate("delete from EUser_Role ur where ur.user = :user and ur.role = :role", [user: obj.user, role: obj.role])
+    static def removeRole(EUser user, ERole role){
+        executeUpdate("delete from EUser_Role ur where ur.user = :user and ur.role = :role", [user: user, role: role])
+    }
+    static def removeRoles(EUser user, List<ERole> roles){
+        executeUpdate("delete from EUser_Role ur where ur.user = :user and ur.role in (:roles)", [user: user, roles: roles])
     }
     static def removeAllRolesFrom(EUser user){
         executeUpdate("delete from EUser_Role ur where ur.user = :user", [user: user])
