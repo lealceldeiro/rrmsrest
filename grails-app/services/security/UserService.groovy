@@ -60,58 +60,73 @@ class UserService {
      */
     def save(UserCommand cmd, long id) {
         EUser e = cmd()
-        boolean creating = false
-        if(e.validate()){
-            EUser aux = null;
-            //editing
-            if(id != null){
-                aux = EUser.get(id)
+        EUser aux = null;
+
+        //editing
+        if(id != null){
+            aux = EUser.get(id)
+            //mandatory fields, but if not provided, then not changed
+            if(cmd.username != null){
+                aux.username = cmd.username;
             }
-            //creating
-            if(!aux){
+            if(cmd.name != null){
+                aux.name = cmd.name;
+            }
+            if(cmd.password != null){
+                aux.password = cmd.password;
+            }
+            aux.email = cmd.email;
+        }
+        //creating
+        else {
+            if(e.validate()) {
                 aux = e;
             }
-            else{
-                aux.id = e.id;
-                aux.username = e.username;
-                aux.email = e.email;
-                aux.name = e.name;
-                aux.password = e.password;
-                aux.roles = e.roles;
+            else {
+                return false
+                //todo: inform error
             }
-            //set the corresponding roles to the user
-            if (cmd.roles.size() > 0) { //not checking for nullability in cmd.roles because it's marked as not nullable on cmd
-                int s = cmd.roles.size()
-                /*if(aux.roles) {
-                    int sr = aux.roles.size()
-                    def ro;
+        }
 
-                    for (int i = 0; i < sr; i++) {
-                        ro = aux.roles[i];
-                        if (!cmd.roles.contains(ro)) {
-                            aux.removeFromRoles(ro);
-                        }
-                    }
-                }*/
-
-                for (int i = 0; i < s; i++) {
-                    def r = ERole.get(cmd.roles.get(i))
-                    if(r){
-                        aux.addToRoles(r)
-                    }
-                    else{
-                        return false
-                        //todo: inform this role isn't present
+        //set the corresponding roles to the user
+        if (cmd.roles != null && cmd.roles.size() > 0) {
+            int s = cmd.roles.size()
+            if(aux.roles) {
+                int sr = aux.roles.size()
+                def ro;
+                for (int i = 0; i < sr; i++) {
+                    ro = aux.roles[i];
+                    if (!cmd.roles.contains(ro.role.id)) {
+                        EUser_Role.removeRole(ro)
                     }
                 }
             }
 
+            def r
+            boolean ctrl = false
+            for (int i = 0; i < s; i++) {
+                r = ERole.get(cmd.roles.get(i))
+                if(r != null){
+                    EUser_Role.addRole(aux, (r as ERole))
+                }
+                else{
+                    ctrl = true
+                }
+            }
 
-            aux.save flush: true
-            return aux
+            if(ctrl){
+                //todo: inform this role isn't present
+            }
         }
-        //todo: inform about the error
-        return false
+        else {
+            if(aux.roles){
+                EUser_Role.removeAllRolesFrom(aux)
+            }
+        }
+
+        aux.save flush: true
+        return aux
+
     }
 
     /**
