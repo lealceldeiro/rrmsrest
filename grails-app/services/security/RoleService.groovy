@@ -53,9 +53,9 @@ class RoleService {
         ERole e = cmd()
         ERole aux
 
-        if(id != null){ //edit
+        if(id){ //edit
             aux = ERole.get(id)
-            aux.active = e.active;
+            aux.active = e.active ? e.active : false;
             aux.description = e.description;
             aux.label = e.label;
         }

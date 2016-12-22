@@ -63,7 +63,7 @@ class UserService {
         EUser aux = null;
 
         //editing
-        if(id != null){
+        if(id){
             aux = EUser.get(id)
             //mandatory fields, but if not provided, then not changed
             if(cmd.username != null){
