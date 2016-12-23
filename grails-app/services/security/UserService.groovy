@@ -35,14 +35,7 @@ class UserService {
 
         def mapped = [];
         list.each {
-            def r = it.roles
-            List<RoleBean> roles = []
-            if(r) {
-                r.each {
-                    roles << new RoleBean(id: it.id, label: it.label, description: it.description)
-                }
-            }
-            mapped << new UserBean(id: it.id, username: it.username, email: it.email, name: it.name, roles: roles)
+            mapped << new UserBean(id: it.id, username: it.username, email: it.email, name: it.name)
         }
 
         response.items = mapped
