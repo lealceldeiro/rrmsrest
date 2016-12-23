@@ -13,9 +13,11 @@ class UserController{
             search  : HttpMethod.GET.name(),
             save  : HttpMethod.POST.name(),
             show  : HttpMethod.GET.name(),
-            delete  : HttpMethod.DELETE.name()
+            delete  : HttpMethod.DELETE.name(),
+            roles  : HttpMethod.GET.name()
     ]
 
+    //region CRUD
     /**
      * Searches for users which match with the specified params
      * @return Roles
@@ -85,6 +87,20 @@ class UserController{
         if(e){
             body.success = true
             body.id = id
+        }
+        render body as JSON
+    }
+    //endregion
+
+    def roles(long id){
+        def body = ['success': false]
+        if(id){
+            final r = userService.roles(id, params)
+            if(r){
+                body.success = true
+                body.items = r['items']
+                body.total = r['total']
+            }
         }
         render body as JSON
     }

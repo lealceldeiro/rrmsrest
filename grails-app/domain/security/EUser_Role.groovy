@@ -38,4 +38,18 @@ class EUser_Role implements Serializable{
     static def removeAllRolesFrom(EUser user){
         executeUpdate("delete from EUser_Role ur where ur.user = :user", [user: user])
     }
+
+    static def getRolesByUser(long id, Map params){
+        createCriteria().list(params) {
+
+            projections {
+                property("role")
+            }
+
+            user {
+                eq "id", id
+            }
+
+        }
+    }
 }

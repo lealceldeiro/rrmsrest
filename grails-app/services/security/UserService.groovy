@@ -10,6 +10,7 @@ import grails.transaction.Transactional
 @Transactional
 class UserService {
 
+    //region CRUD
     /**
      * Search a user(s) according to optional parameters
      * @param cmd       [optional] Grails command containing the parameters for searching the user(s)
@@ -158,5 +159,19 @@ class UserService {
         }
         //todo: inform about the error
         return false
+    }
+    //endregion
+
+    def roles(long id, params){
+        Map response = [:]
+        def mapped = [];
+        def list = EUser_Role.getRolesByUser(id, params)
+        list.each{
+            mapped << new RoleBean(id: it.id, label: it.label, description: it.description, active: it.active)
+        }
+
+        response.items = mapped
+        response.total = list.totalCount ? list.totalCount : 0
+        return response
     }
 }
