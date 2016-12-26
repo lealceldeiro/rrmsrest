@@ -82,6 +82,9 @@ class UserService {
             }
         }
 
+        //save before adding roles relationships
+        aux.save flush: true
+
         //set the corresponding roles to the user
         if (cmd.roles != null && cmd.roles.size() > 0) {
             int s = cmd.roles.size()
@@ -124,7 +127,7 @@ class UserService {
             }
         }
 
-        aux.save flush: true
+
         return aux
 
     }

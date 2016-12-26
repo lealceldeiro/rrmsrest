@@ -96,8 +96,15 @@ class RoleService {
     def delete(long id) {
         def e = ERole.get(id);
         if(e){
-            e.delete();
-            return true
+            def ur = EUser_Role.findByRole(e)
+            if(!ur){
+                e.delete();
+                return true
+            }
+            else{
+                //todo: inform about error
+                return false
+            }
         }
         //todo: inform about the error
         return false
