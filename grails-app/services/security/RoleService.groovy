@@ -72,9 +72,9 @@ class RoleService {
     }
 
     /**
-     * Shows some role info
+     * Shows some role's info
      * @param id Identifier of the role that is going to be shown
-     * @return A RoleBean entity with the role's info or false if none user is found
+     * @return A RoleBean entity with the role's info or false if none role is found
      */
     def show (long id){
         def e = Optional.ofNullable(ERole.get(id))

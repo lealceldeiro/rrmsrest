@@ -20,7 +20,10 @@ class UserController{
     //region CRUD
     /**
      * Searches for users which match with the specified params
-     * @return Roles
+     * @param cmd Search criteria:
+     *                              q: Criteria for searching the users
+     * @return A json containing the user's info if the operation was successful with the following structure
+     * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
     def search(SearchCommand cmd) {
         def body = ['success': false]
@@ -62,7 +65,7 @@ class UserController{
     /**
      * Return a user's info
      * @param id User's identifier
-     * @return A json containing the role's info if the operation was successful with the following structure
+     * @return A json containing the user's info if the operation was successful with the following structure
      * <p><code>{success: true|false, item:{<param1>,...,<paramN>}}</code></p>
      */
     def show(long id){

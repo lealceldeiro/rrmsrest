@@ -18,7 +18,10 @@ class RoleController {
 
     /**
      * Searches for roles which match with the specified params
-     * @return Roles
+     * @param cmd Search criteria:
+     *                              q: Criteria for searching the roles
+     * @return A json containing the roles' info if the operation was successful with the following structure
+     * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
     def search(SearchCommand cmd) {
         def body = ['success': false]

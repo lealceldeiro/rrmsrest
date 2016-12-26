@@ -45,12 +45,12 @@ class UserService {
     }
 
     /**
-     * Creates or updates a role
-     * @param cmd Role data such: label(string), description(string) and active(boolean)
-     * @param id [optional] if an update is going to be performed, the id of the role which is going to be updated
+     * Creates or updates a User
+     * @param cmd User data such: label(string), description(string) and active(boolean)
+     * @param id [optional] if an update is going to be performed, the id of the user which is going to be updated
      * must be supplied
-     * @return A json containing the id of the role if the operation was successful
-     * <p><code>{success: true|false, id: <roleId>}</code></p>
+     * @return A json containing the id of the user if the operation was successful
+     * <p><code>{success: true|false, id: <userId>}</code></p>
      */
     def save(UserCommand cmd, long id) {
         EUser e = cmd()
@@ -133,9 +133,9 @@ class UserService {
     }
 
     /**
-     * Shows some User info
+     * Shows some User's info
      * @param id Identifier of the user that is going to be shown
-     * @return A UserBean entity with the role's info or false if none user is found
+     * @return A UserBean entity with the user's info or false if none user is found
      */
     def show (long id){
         def e = Optional.ofNullable(EUser.get(id))
