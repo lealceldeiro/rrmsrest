@@ -95,6 +95,11 @@ class UserController{
     }
     //endregion
 
+    /**
+     * Returns a user's roles by its id
+     * @param id user's id
+     * @return A <code>List</code> of roles
+     */
     def roles(long id){
         def body = ['success': false]
         if(id){
