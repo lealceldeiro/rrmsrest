@@ -1,6 +1,7 @@
 package command.security.user
 
 import grails.validation.Validateable
+import org.grails.databinding.BindUsing
 import security.EUser
 
 /**
@@ -15,6 +16,11 @@ class UserCommand {
     String name
     String password
 
+    @BindUsing({object, source ->
+        String r = (source['roles'] as String)
+        r = r.substring(1, r.length() - 1).replaceAll(" ", "")
+        r.split(',')
+    })
     List<Long> roles
 
     static constraints = {
