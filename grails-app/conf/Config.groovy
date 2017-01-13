@@ -127,32 +127,4 @@ log4j.main = {
            'net.sf.ehcache.hibernate'
 }
 
-//Spring security core
-/*grails.plugin.springsecurity.userLookup.userDomainClassName = 'security.domain.usuario.DUsuario'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'uy.isa.security.domain.usuario.NRol'
-grails.plugin.springsecurity.authority.className = 'uy.isa.security.domain.usuario.NPermiso'
-grails.plugin.springsecurity.authority.nameField = 'nombrePermiso'
-
-grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-        '/'              : ['permitAll']*//*['IS_AUTHENTICATED_FULLY', "IS_AUTHENTICATED_REMEMBERED"]*//*,
-        '/index'         : ['permitAll']*//* ['IS_AUTHENTICATED_FULLY', "IS_AUTHENTICATED_REMEMBERED"]*//*,
-        '/index.gsp'     : ['permitAll']*//*['IS_AUTHENTICATED_FULLY', "IS_AUTHENTICATED_REMEMBERED"]*//*,
-        '/assets*//**'     : ['permitAll'],
-        '/partials*//**'   : ['permitAll'],
-        '/services*//**'   : ['permitAll'],
-        '*//**//*js*//**'      : ['permitAll'],
-        '*//**//*css*//**'     : ['permitAll'],
-        '*//**//*images*//**'  : ['permitAll'],
-        '*//**//*partials*//**': ['permitAll'],
-        '*//**//*favicon.ico': ['permitAll']
-]
-
-grails.plugin.springsecurity.logout.postOnly = false
-grails.plugin.springsecurity.useSecurityEventListener = true
-grails.plugin.springsecurity.rememberMe.cookieName = 'isa_remember_me'
-grails.plugin.springsecurity.rememberMe.key = 'isa_team_development'
-grails.plugin.springsecurity.logout.handlerNames = [
-        'rememberMeServices', 'securityContextLogoutHandler', 'rolesCleanerLogoutHandler'
-]*/
-
 grails.databinding.dateFormats = [ "yyyy-MM-dd", "yyyy-MM-dd'T'hh:mm:ss'Z'" ]
