@@ -128,3 +128,8 @@ log4j.main = {
 }
 
 grails.databinding.dateFormats = [ "yyyy-MM-dd", "yyyy-MM-dd'T'hh:mm:ss'Z'" ]
+
+grails.plugin.springsecurity.filterChain.chainMap = [
+        '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
+        '/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'                                                                          // Traditional chain
+]
