@@ -2,23 +2,26 @@ class UrlMappings {
 
         static mappings = {
 
-                "/user/search"                          (controller: "UserController", action: "search")
-                "/user/save/$id"                        (controller: "UserController", action: "save")
-                "/user/delete/$id"                      (controller: "UserController", action: "delete")
-                "/user/show/$id"                        (controller: "UserController", action: "show")
-                "/user/roles/$id"                       (controller: "UserController", action: "roles")
-
-                "/role/search"                          (controller: "RoleController", action: "search")
-                "/role/save/$id"                        (controller: "RoleController", action: "save")
-                "/role/delete/$id"                      (controller: "RoleController", action: "delete")
-                "/role/show/$id"                        (controller: "RoleController", action: "show")
-
-
                 "/$controller/$action?/$id?(.$format)?"{
                         constraints {
                                 // apply constraints here
                         }
                 }
+
+
+                "/api/user/search"                            (controller: "user", action: "search")
+                "/api/user/save/$id?"                         (controller: "user", action: "save")
+                "/api/user/delete/$id?"                       (controller: "user", action: "delete")
+                "/api/user/show/$id?"                         (controller: "user", action: "show")
+                "/api/user/roles/$id?"                        (controller: "user", action: "roles")
+
+                "/api/role/search"                            (controller: "role", action: "search")
+                "/api/role/save/$id?"                         (controller: "role", action: "save")
+                "/api/role/delete/$id?"                       (controller: "role", action: "delete")
+                "/api/role/show/$id?"                         (controller: "role", action: "show")
+                "/api/role/permissions/$id?"                  (controller: "role", action: "permissions")
+
+
 
                 "/"(view:"/index")
                 "500"(view:'/error')

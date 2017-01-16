@@ -34,9 +34,9 @@ class UserService {
 
         }
 
-        def mapped = [];
+        def mapped = []
         list.each {
-            mapped << new UserBean(id: it.id, username: it.username, email: it.email, name: it.name)
+            mapped << new UserBean(id: it.id, username: it.username, email: it.email, name: it.name, enabled: it.enabled)
         }
 
         response.items = mapped
@@ -46,7 +46,7 @@ class UserService {
 
     /**
      * Creates or updates a User
-     * @param cmd User data such: label(string), description(string) and active(boolean)
+     * @param cmd User data such: label(string), description(string) and enabled(boolean)
      * @param id [optional] if an update is going to be performed, the id of the user which is going to be updated
      * must be supplied
      * @return A json containing the id of the user if the operation was successful
@@ -54,27 +54,28 @@ class UserService {
      */
     def save(UserCommand cmd, long id) {
         EUser e = cmd()
-        EUser aux = null;
+        EUser aux = null
 
         //editing
         if(id){
             aux = EUser.get(id)
             //mandatory fields, but if not provided, then not changed
             if(cmd.username != null){
-                aux.username = cmd.username;
+                aux.username = cmd.username
             }
             if(cmd.name != null){
-                aux.name = cmd.name;
+                aux.name = cmd.name
             }
             if(cmd.password != null){
-                aux.password = cmd.password;
+                aux.password = cmd.password
             }
-            aux.email = cmd.email;
+            aux.email = cmd.email
+            aux.enabled = cmd.enabled
         }
         //creating
         else {
             if(e.validate()) {
-                aux = e;
+                aux = e
             }
             else {
                 return false
@@ -91,16 +92,16 @@ class UserService {
             if(aux.roles) {
                 int sr = aux.roles.size()
                 if(sr > 0){
-                    def ro;
-                    List<ERole> deleteList = []
+                    def ro
+                    List<BRole> deleteList = []
                     for (int i = 0; i < sr; i++) {
-                        ro = aux.roles[i];
+                        ro = aux.roles[i]
                         if (!cmd.roles.contains(ro.role.id)) {
                             deleteList.add(ro.role)
                         }
                     }
                     if(deleteList.size() > 0){
-                        EUser_Role.removeRoles(aux, deleteList)
+                        BUser_Role.removeRoles(aux, deleteList)
                     }
                 }
             }
@@ -108,9 +109,9 @@ class UserService {
             def r
             boolean ctrl = false
             for (int i = 0; i < s; i++) {
-                r = ERole.get(cmd.roles.get(i))
+                r = BRole.get(cmd.roles.get(i))
                 if(r != null){
-                    EUser_Role.addRole(aux, (r as ERole))
+                    BUser_Role.addRole(aux, (r as BRole))
                 }
                 else{
                     ctrl = true
@@ -123,7 +124,7 @@ class UserService {
         }
         else {
             if(aux.roles){
-                EUser_Role.removeAllRolesFrom(aux)
+                BUser_Role.removeAllRolesFrom(aux)
             }
         }
 
@@ -142,7 +143,7 @@ class UserService {
         if(e.isPresent()){
             def i = e.value
             if(i){
-                return new UserBean(username: i.username, email: i.email, name: i.name)
+                return new UserBean(username: i.username, email: i.email, name: i.name, enabled: i.enabled)
             }
         }
         //todo: inform about the error
@@ -165,12 +166,19 @@ class UserService {
     }
     //endregion
 
+    /**
+     * Returns all roles associated to a user
+     * @param id User's id
+     * @param params [optional] Parameters for paging the result
+     * @return A json containing a list of roles with the following structure if the operation was successful
+     * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
+     */
     def roles(long id, params){
         Map response = [:]
-        def mapped = [];
-        def list = EUser_Role.getRolesByUser(id, params)
+        def mapped = []
+        def list = BUser_Role.getRolesByUser(id, params)
         list.each{
-            mapped << new RoleBean(id: it.id, label: it.label, description: it.description, active: it.active)
+            mapped << new RoleBean(id: it.id, label: it.label, description: it.description, enabled: it.enabled)
         }
 
         response.items = mapped

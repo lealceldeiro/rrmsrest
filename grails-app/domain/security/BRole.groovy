@@ -1,14 +1,16 @@
 package security
 
-class ERole implements Serializable {
+class BRole implements Serializable {
 
     String label
     String description
-    boolean active
+    Boolean enabled
+
+    static hasMany = [permissions: BRole_Permission]
 
     static constraints = {
         label nullable: false, blank: false, unique: true
-        active nullable: true
+        enabled nullable: true
         description nullable: true
     }
 }

@@ -16,6 +16,7 @@ class RoleController {
             delete  : HttpMethod.DELETE.name()
     ]
 
+    //region CRUD
     /**
      * Searches for roles which match with the specified params
      * @param cmd Search criteria:
@@ -42,7 +43,7 @@ class RoleController {
      * @param cmd Role information:
      *                              label:          unique identifier for this role
      *                              description:    [optional] a brief description for this role
-     *                              active:         [optional] whether the role is active or not
+     *                              enabled:         [optional] whether the role is enabled or not
      * @param id [optional] Identifier of Role which is going to be edited
      * @return JSON informing whether the action was successful or not. If successful, it also contains the id of the
      * just created/edited role
@@ -50,7 +51,7 @@ class RoleController {
     def save(RoleCommand cmd, long id){
         def body = ['success' : false]
 
-        final e = roleService.save(cmd, id);
+        final e = roleService.save(cmd, id)
         if(e){
             body.success = true
             body.id = e.id
@@ -87,6 +88,25 @@ class RoleController {
         if(e){
             body.success = true
             body.id = id
+        }
+        render body as JSON
+    }
+    //endregion
+
+    /**
+     * Returns a role's permissions by its id
+     * @param id role's id
+     * @return A <code>List</code> of permissions
+     */
+    def permissions(long id){
+        def body = ['success': false]
+        if(id){
+            final r = roleService.permissions(id, params)
+            if(r){
+                body.success = true
+                body.items = r['items']
+                body.total = r['total']
+            }
         }
         render body as JSON
     }

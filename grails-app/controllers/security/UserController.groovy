@@ -53,7 +53,7 @@ class UserController{
     def save(UserCommand cmd, long id){
         def body = ['success' : false]
 
-        final e = userService.save(cmd, id);
+        final e = userService.save(cmd, id)
         if(e){
             body.success = true
             body.id = e.id

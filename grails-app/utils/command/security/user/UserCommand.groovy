@@ -15,6 +15,7 @@ class UserCommand {
     String email
     String name
     String password
+    boolean enabled
 
     @BindUsing({object, source ->
         String r = (source['roles'] as String)
@@ -29,10 +30,11 @@ class UserCommand {
         name nullable: false, blank: false
         password nullable: false, blank: false
         roles nullable: false
+        enabled nullable: true
     }
 
     def call(){
-        EUser u = new EUser(username: username, email: email, name: name, password: password)
+        EUser u = new EUser(username: username, email: email, name: name, password: password, enabled: enabled)
         u.id = id
         return u
     }

@@ -129,7 +129,28 @@ log4j.main = {
 
 grails.databinding.dateFormats = [ "yyyy-MM-dd", "yyyy-MM-dd'T'hh:mm:ss'Z'" ]
 
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'security.EUser'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'security.BRole'
+grails.plugin.springsecurity.authority.className = 'security.BPermission'
+grails.plugin.springsecurity.authority.nameField = 'name'
+
+grails.plugin.springsecurity.rest.login.usernamePropertyName = 'usrnm'
+grails.plugin.springsecurity.rest.login.passwordPropertyName = 'pswrd'
+
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
         '/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'                                                                          // Traditional chain
+]
+
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        '/'              : ['permitAll'],
+        '/index'         : ['permitAll'],
+        '/index.gsp'     : ['permitAll'],
+        '/assets/**'     : ['permitAll'],
+        '/partials/**'   : ['permitAll'],
+        '/apiDoc/**'     : ['permitAll'],
+        '/**/js/**'      : ['permitAll'],
+        '/**/css/**'     : ['permitAll'],
+        '/**/images/**'  : ['permitAll'],
+        '/**/favicon.ico': ['permitAll']
 ]
