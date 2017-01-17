@@ -156,9 +156,10 @@ class UserService {
      * @return <code>true</code> or <code>false</code> depending on the result of the operation
      */
     def delete(long id) {
-        def e = EUser.get(id);
+        def e = EUser.get(id)
         if(e){
-            e.delete();
+            BUser_Role.removeAllRolesFrom(e)
+            e.delete()
             return true
         }
         //todo: inform about the error
@@ -184,5 +185,33 @@ class UserService {
         response.items = mapped
         response.total = list.totalCount ? list.totalCount : 0
         return response
+    }
+
+    List<EUser> getDefaultAdminWithId(long id){
+        def list = EUser.createCriteria().list {
+            eq(username: 'admin')
+            eq(id: id)
+        }
+
+        def mapped = []
+        list.each {
+            mapped << new UserBean(id: it.id, username: it.username, email: it.email, name: it.name, enabled: it.enabled)
+        }
+
+        return mapped as List<EUser>
+    }
+
+    def createDefaultUser(){
+        EUser u = new EUser(email: 'admin@default.com', name: 'Admin', username: 'admin', password: 'admin')
+        u.save(flush: true, failOnError: true)
+
+        return u
+    }
+
+    def addDefaultRoleToUser(Object u){
+        def r = BRole.findByLabel('ROLE_ADMIN')
+        if(r){
+            BUser_Role.addRole((u as EUser), (r as BRole))
+        }
     }
 }

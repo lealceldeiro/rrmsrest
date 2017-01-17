@@ -137,6 +137,9 @@ grails.plugin.springsecurity.authority.nameField = 'name'
 grails.plugin.springsecurity.rest.login.usernamePropertyName = 'usrnm'
 grails.plugin.springsecurity.rest.login.passwordPropertyName = 'pswrd'
 
+grails.plugin.springsecurity.rest.login.usernameParameter = 'usrnm'
+grails.plugin.springsecurity.rest.login.passwordParameter = 'pswrd'
+
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
         '/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'                                                                          // Traditional chain

@@ -137,6 +137,7 @@ class RoleService {
         if(e){
             def ur = BUser_Role.findByRole(e)
             if(!ur){
+                BRole_Permission.removeAllPermissionsFrom(e)
                 e.delete()
                 return true
             }
@@ -167,5 +168,19 @@ class RoleService {
         response.items = mapped
         response.total = list.totalCount ? list.totalCount : 0
         return response
+    }
+
+    boolean noRolesInDB() {
+        BRole.count() < 1
+    }
+
+    boolean createDefaultAdminRole(){
+        BRole r = new BRole(description: 'Role for administrators', label: 'ROLE_ADMIN', enabled: true)
+        r.save(flush: true, failOnError: true)
+        def brp = BPermission.findAll()
+        brp.each {it ->
+            BRole_Permission.addPermission(r, it)
+        }
+
     }
 }

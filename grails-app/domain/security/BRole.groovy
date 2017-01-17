@@ -1,5 +1,10 @@
 package security
 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+@EqualsAndHashCode(includes = 'label')
+@ToString(includes = 'label', includeNames = true, includePackage = false)
 class BRole implements Serializable {
 
     String label

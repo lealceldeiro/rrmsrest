@@ -34,6 +34,7 @@ class UserCommand {
     }
 
     def call(){
+        //roles are not added here, but in the controller, using the BUser_Role domain class
         EUser u = new EUser(username: username, email: email, name: name, password: password, enabled: enabled)
         u.id = id
         return u

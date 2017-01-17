@@ -9,6 +9,8 @@ class UserController{
 
     def userService
 
+    def configurationService
+
     static allowedMethods = [
             search  : HttpMethod.GET.name(),
             save  : HttpMethod.POST.name(),
@@ -85,11 +87,26 @@ class UserController{
      * <p><code>{success: true|false, id: <identifier></code></p>
      */
     def delete(long id){
+        boolean markDefaultAdminAsUnset = false
+
+        if(!configurationService.isDefaultAdminUnSetup()){
+            List<EUser> list = userService.getDefaultAdminWithId(id)
+            if(list.size() > 0){
+                if(id == list.get(0).id){
+                    markDefaultAdminAsUnset = true
+                }
+            }
+        }
+
         def body = ['success': false]
         final e = userService.delete(id)
         if(e){
             body.success = true
             body.id = id
+
+            if(markDefaultAdminAsUnset){
+                configurationService.unSetupDefaultAdmin()
+            }
         }
         render body as JSON
     }

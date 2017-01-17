@@ -6,11 +6,11 @@ import nomenclator.EnumPermission
 @Transactional
 class PermissionService {
 
-    boolean check() {
+    boolean noPermissionInDB() {
         BPermission.count() < 1
     }
 
-    def insert(){
+    def createDefaultPermissions(){
         List<EnumPermission> ps = EnumPermission.values()
 
         ps.each {it->
