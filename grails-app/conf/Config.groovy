@@ -85,6 +85,7 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+//ENV CONFIG
 environments {
     test {
         grails.config.locations = [
@@ -106,7 +107,7 @@ environments {
     }
 }
 
-// log4j configuration
+// LOG4J CONFIGURATION
 log4j.main = {
     // Example of changing the log pattern for the default console appender:
     //
@@ -129,17 +130,28 @@ log4j.main = {
 
 grails.databinding.dateFormats = [ "yyyy-MM-dd", "yyyy-MM-dd'T'hh:mm:ss'Z'" ]
 
+//SPRING SECURITY
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'security.EUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'security.BRole'
 grails.plugin.springsecurity.authority.className = 'security.BPermission'
 grails.plugin.springsecurity.authority.nameField = 'name'
 
-grails.plugin.springsecurity.rest.login.usernamePropertyName = 'usrnm'
-grails.plugin.springsecurity.rest.login.passwordPropertyName = 'pswrd'
+//names in which the credentials will be received from the request
+grails.plugin.springsecurity.rest.login.usernamePropertyName = 'usrnm'  //username
+grails.plugin.springsecurity.rest.login.passwordPropertyName = 'pswrd'  //password
 
-grails.plugin.springsecurity.rest.login.usernameParameter = 'usrnm'
-grails.plugin.springsecurity.rest.login.passwordParameter = 'pswrd'
+//header through which client must send the access token (need to be bearer disabled, see ANCHOR1)
+//grails.plugin.springsecurity.rest.token.validation.headerName = "X-API-Auth-Token"
+// name defined for all permissions granted to the user
+grails.plugin.springsecurity.rest.token.rendering.authoritiesPropertyName = "permissions"
 
+//name for variable in which the access token will be sent (need to be bearer disabled, see ANCHOR1)
+//grails.plugin.springsecurity.rest.token.rendering.tokenPropertyName = "token"
+
+//ANCHOR1: disable bearer
+// grails.plugin.springsecurity.rest.token.validation.useBearerToken = false
+
+//how filters are going to be applied
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
         '/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'                                                                          // Traditional chain
@@ -155,5 +167,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/**/js/**'      : ['permitAll'],
         '/**/css/**'     : ['permitAll'],
         '/**/images/**'  : ['permitAll'],
-        '/**/favicon.ico': ['permitAll']
+        '/**/favicon.ico': ['permitAll'],
+        '/api/logout': ['permitAll']
 ]

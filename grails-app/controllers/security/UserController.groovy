@@ -4,7 +4,9 @@ import command.SearchCommand
 import command.security.user.UserCommand
 import grails.converters.JSON
 import org.springframework.http.HttpMethod
+import org.springframework.security.access.annotation.Secured
 
+@Secured("hasRole('MANAGE_USER')")
 class UserController{
 
     def userService
@@ -12,11 +14,12 @@ class UserController{
     def configurationService
 
     static allowedMethods = [
-            search  : HttpMethod.GET.name(),
-            save  : HttpMethod.POST.name(),
-            show  : HttpMethod.GET.name(),
-            delete  : HttpMethod.DELETE.name(),
-            roles  : HttpMethod.GET.name()
+            search          : HttpMethod.GET.name(),
+            create          : HttpMethod.PUT.name(),
+            update          : HttpMethod.POST.name(),
+            show            : HttpMethod.GET.name(),
+            delete          : HttpMethod.DELETE.name(),
+            roles           : HttpMethod.GET.name()
     ]
 
     //region CRUD
@@ -27,6 +30,7 @@ class UserController{
      * @return A json containing the user's info if the operation was successful with the following structure
      * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
+    @Secured("hasRole('READ_USER')")
     def search(SearchCommand cmd) {
         def body = ['success': false]
         if(cmd.validate()){
@@ -41,18 +45,39 @@ class UserController{
     }
 
     /**
-     * Creates a new User or update an existing one if an id is supplied as last parameter
+     * Creates a new User
      * @param cmd User information:
      *                              username:           User's username
      *                              email:              [optional] user's email
      *                              name:               User's name
      *                              password:           User's password
      *                              roles               List with the User's roles's identifiers
-     * @param id [optional] Identifier of User which is going to be edited
      * @return JSON informing whether the action was successful or not. If successful, it also contains the id of the
      * just created/edited user
      */
-    def save(UserCommand cmd, long id){
+    @Secured("hasRole('CREATE_USER')")
+    def create(UserCommand cmd){
+        save(cmd)
+    }
+
+    /**
+     * Updates an existing user
+     * @param cmd User information:
+     *                              username:           User's username
+     *                              email:              [optional] user's email
+     *                              name:               User's name
+     *                              password:           User's password
+     *                              roles               List with the User's roles's identifiers
+     * @param id Identifier of User which is going to be edited
+     * @return JSON informing whether the action was successful or not. If successful, it also contains the id of the
+     * just created/edited user
+     */
+    @Secured("hasRole('CREATE_USER')")
+    def update(UserCommand cmd, long id){
+        save(cmd, id)
+    }
+
+    protected save(UserCommand cmd, long id = 0){
         def body = ['success' : false]
 
         final e = userService.save(cmd, id)
@@ -70,6 +95,7 @@ class UserController{
      * @return A json containing the user's info if the operation was successful with the following structure
      * <p><code>{success: true|false, item:{<param1>,...,<paramN>}}</code></p>
      */
+    @Secured("hasRole('READ_USER')")
     def show(long id){
         def body = ['success' : false]
         def e = userService.show(id);
@@ -86,6 +112,7 @@ class UserController{
      * @return A json containing the user's id if the operation was successful with the following structure
      * <p><code>{success: true|false, id: <identifier></code></p>
      */
+    @Secured("hasRole('DELETE_USER')")
     def delete(long id){
         boolean markDefaultAdminAsUnset = false
 
@@ -117,6 +144,7 @@ class UserController{
      * @param id user's id
      * @return A <code>List</code> of roles
      */
+    @Secured("hasRole('READ_USER')")
     def roles(long id){
         def body = ['success': false]
         if(id){

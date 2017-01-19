@@ -4,16 +4,20 @@ import command.SearchCommand
 import command.security.role.RoleCommand
 import grails.converters.JSON
 import org.springframework.http.HttpMethod
+import org.springframework.security.access.annotation.Secured
 
+@Secured("hasRole('MANAGE_ROLE')")
 class RoleController {
 
     def roleService
 
     static allowedMethods = [
-            search  : HttpMethod.GET.name(),
-            save    : HttpMethod.POST.name(),
-            show    : HttpMethod.GET.name(),
-            delete  : HttpMethod.DELETE.name()
+            search          : HttpMethod.GET.name(),
+            create          : HttpMethod.PUT.name(),
+            update          : HttpMethod.POST.name(),
+            show            : HttpMethod.GET.name(),
+            delete          : HttpMethod.DELETE.name(),
+            permissions     : HttpMethod.GET.name()
     ]
 
     //region CRUD
@@ -24,6 +28,7 @@ class RoleController {
      * @return A json containing the roles' info if the operation was successful with the following structure
      * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
+    @Secured("hasRole('READ_ROLE')")
     def search(SearchCommand cmd) {
         def body = ['success': false]
         if(cmd.validate()){
@@ -39,16 +44,35 @@ class RoleController {
     }
 
     /**
-     * Creates a new Role or update an existing one if an id is supplied as last parameter
+     * Creates a new Role
      * @param cmd Role information:
      *                              label:          unique identifier for this role
      *                              description:    [optional] a brief description for this role
      *                              enabled:         [optional] whether the role is enabled or not
-     * @param id [optional] Identifier of Role which is going to be edited
      * @return JSON informing whether the action was successful or not. If successful, it also contains the id of the
      * just created/edited role
      */
-    def save(RoleCommand cmd, long id){
+    @Secured("hasRole('CREATE_ROLE')")
+    def create(RoleCommand cmd){
+        save(cmd)
+    }
+
+    /**
+     * Updates an existing role
+     * @param cmd Role information:
+     *                              label:          unique identifier for this role
+     *                              description:    [optional] a brief description for this role
+     *                              enabled:         [optional] whether the role is enabled or not
+     * @param id Identifier of Role which is going to be edited
+     * @return JSON informing whether the action was successful or not. If successful, it also contains the id of the
+     * just created/edited role
+     */
+    @Secured("hasRole('UPDATE_ROLE')")
+    def update(RoleCommand cmd, long id){
+        save(cmd, id)
+    }
+
+    protected save(RoleCommand cmd, long id = 0){
         def body = ['success' : false]
 
         final e = roleService.save(cmd, id)
@@ -66,6 +90,7 @@ class RoleController {
      * @return A json containing the role's info if the operation was successful with the following structure
      * <p><code>{success: true|false, item:{<param1>,...,<paramN>}}</code></p>
      */
+    @Secured("hasRole('READ_ROLE')")
     def show(long id){
         def body = ['success' : false]
         def e = roleService.show(id);
@@ -82,6 +107,7 @@ class RoleController {
      * @return  A json containing the role's id if the operation was successful with the following structure
      * <p><code>{success: true|false, id: <identifier></code></p>
      */
+    @Secured("hasRole('DELETE_ROLE')")
     def delete(long id){
         def body = ['success': false]
         final e = roleService.delete(id)
@@ -98,6 +124,7 @@ class RoleController {
      * @param id role's id
      * @return A <code>List</code> of permissions
      */
+    @Secured("hasRole('READ_ROLE')")
     def permissions(long id){
         def body = ['success': false]
         if(id){

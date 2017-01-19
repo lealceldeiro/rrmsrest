@@ -188,9 +188,9 @@ class UserService {
     }
 
     List<EUser> getDefaultAdminWithId(long id){
-        def list = EUser.createCriteria().list {
-            eq(username: 'admin')
-            eq(id: id)
+        def list = EUser.createCriteria().list() {
+            eq("username", "admin")
+            eq("id", id)
         }
 
         def mapped = []

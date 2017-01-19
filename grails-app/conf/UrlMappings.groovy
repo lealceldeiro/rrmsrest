@@ -2,6 +2,7 @@ class UrlMappings {
 
         static mappings = {
 
+                //generic
                 "/$controller/$action?/$id?(.$format)?"{
                         constraints {
                                 // apply constraints here
@@ -9,20 +10,20 @@ class UrlMappings {
                 }
 
 
-                "/api/user/search"                            (controller: "user", action: "search")
-                "/api/user/save/$id?"                         (controller: "user", action: "save")
-                "/api/user/delete/$id?"                       (controller: "user", action: "delete")
-                "/api/user/show/$id?"                         (controller: "user", action: "show")
-                "/api/user/roles/$id?"                        (controller: "user", action: "roles")
 
-                "/api/role/search"                            (controller: "role", action: "search")
-                "/api/role/save/$id?"                         (controller: "role", action: "save")
-                "/api/role/delete/$id?"                       (controller: "role", action: "delete")
-                "/api/role/show/$id?"                         (controller: "role", action: "show")
-                "/api/role/permissions/$id?"                  (controller: "role", action: "permissions")
+                //USER...
+                "/api/user"                     (controller: "user")    {action= [GET: "search", PUT: "create"]}
+                "/api/user/$id"                 (controller: "user")    {action= [GET: "show", POST: "update", DELETE: "delete"]}
+                "/api/user/$id/roles"           (controller: "user", action: "roles")
 
+                //ROLE...
+                "/api/role"                     (controller: "role")    {action= [GET: "search", PUT: "create"]}
+                "/api/role/$id"                 (controller: "role")    {action= [GET: "show", POST: "update", DELETE: "delete"]}
+                "/api/role/$id/permissions"     (controller: "role", action: "permissions")
 
 
+
+                //default
                 "/"(view:"/index")
                 "500"(view:'/error')
         }

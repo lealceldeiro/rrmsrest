@@ -71,39 +71,40 @@ class RoleService {
         aux.save flush: true
 
         //set the corresponding permissions to the role
-        int s = cmd.permissions.size()
-        if (cmd.permissions != null && s > 0) {
-            if(aux.permissions) {
-                int ps = aux.permissions.size()
-                if(ps > 0){
-                    def o
-                    List<BPermission> deleteList = []
-                    for (int i = 0; i < ps; i++) {
-                        o = aux.permissions[i]
-                        if (!cmd.permissions.contains(o.permission.id)) {
-                            deleteList.add(o.permission)
+        if (cmd.permissions != null) {
+            int s = cmd.permissions.size()
+            if(s > 0) {
+                if (aux.permissions) {
+                    int ps = aux.permissions.size()
+                    if (ps > 0) {
+                        def o
+                        List<BPermission> deleteList = []
+                        for (int i = 0; i < ps; i++) {
+                            o = aux.permissions[i]
+                            if (!cmd.permissions.contains(o.permission.id)) {
+                                deleteList.add(o.permission)
+                            }
+                        }
+                        if (deleteList.size() > 0) {
+                            BRole_Permission.removePermissions(aux, deleteList)
                         }
                     }
-                    if(deleteList.size() > 0){
-                        BRole_Permission.removePermissions(aux, deleteList)
+                }
+
+                def p
+                boolean ctrl = false
+                for (int i = 0; i < s; i++) {
+                    p = BPermission.get(cmd.permissions.get(i))
+                    if (p != null) {
+                        BRole_Permission.addPermission(aux, (p as BPermission))
+                    } else {
+                        ctrl = true
                     }
                 }
-            }
 
-            def p
-            boolean ctrl = false
-            for (int i = 0; i < s; i++) {
-                p = BPermission.get(cmd.permissions.get(i))
-                if(p != null){
-                    BRole_Permission.addPermission(aux, (p as BPermission))
+                if (ctrl) {
+                    //todo: inform this role isn't present
                 }
-                else{
-                    ctrl = true
-                }
-            }
-
-            if(ctrl){
-                //todo: inform this role isn't present
             }
         }
 
