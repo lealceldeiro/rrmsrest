@@ -18,4 +18,11 @@ enum EnumPermission {
         UPDATE_ROLE,
         DELETE_ROLE,
 
+    /*PERMISSION*/
+    MANAGE_PERMISSION,
+        CREATE_PERMISSION,
+        READ_PERMISSION,
+        UPDATE_PERMISSION,
+        DELETE_PERMISSION,
+
 }

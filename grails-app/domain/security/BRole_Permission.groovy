@@ -34,7 +34,7 @@ class BRole_Permission implements Serializable{
     }
 
     static def removePermissions(BRole role, List<BPermission> permissions){
-        executeUpdate("delete from BRole_Permission rp where rp.role = :role and rp.permission in (:permission)", [role: role, permissions: permissions])
+        executeUpdate("delete from BRole_Permission rp where rp.role = :role and rp.permission in (:permissions)", [role: role, permissions: permissions])
     }
 
     static def removeAllPermissionsFrom(BRole role){

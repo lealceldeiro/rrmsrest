@@ -32,7 +32,7 @@ class RoleService {
 
         }
 
-        def mapped = [];
+        def mapped = []
         list.each {
             mapped << new RoleBean(id: it.id, label: it.label, description: it.description, enabled: it.enabled)
         }
@@ -134,7 +134,7 @@ class RoleService {
      * @return <code>true</code> or <code>false</code> depending on the result of the operation
      */
     def delete(long id) {
-        def e = BRole.get(id);
+        def e = BRole.get(id)
         if(e){
             def ur = BUser_Role.findByRole(e)
             if(!ur){

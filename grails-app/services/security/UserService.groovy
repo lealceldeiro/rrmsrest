@@ -202,7 +202,7 @@ class UserService {
     }
 
     def createDefaultUser(){
-        EUser u = new EUser(email: 'admin@default.com', name: 'Admin', username: 'admin', password: 'admin')
+        EUser u = new EUser(email: 'admin@default.com', name: 'Admin', username: 'admin', password: 'admin', enabled: true)
         u.save(flush: true, failOnError: true)
 
         return u
