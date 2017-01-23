@@ -56,6 +56,12 @@ class UserService {
         EUser e = cmd()
         EUser aux = null
 
+        def oEntity = EOwnedEntity.get(cmd.entity)
+        if(!oEntity){
+            //todo: inform error entity doesn't exist
+            return false
+        }
+
         //editing
         if(id){
             aux = EUser.get(id)
@@ -101,7 +107,7 @@ class UserService {
                         }
                     }
                     if(deleteList.size() > 0){
-                        BUser_Role.removeRoles(aux, deleteList)
+                        BUser_Role_OwnedEntity.removeRoles(aux, deleteList, oEntity)
                     }
                 }
             }
@@ -111,7 +117,7 @@ class UserService {
             for (int i = 0; i < s; i++) {
                 r = BRole.get(cmd.roles.get(i))
                 if(r != null){
-                    BUser_Role.addRole(aux, (r as BRole))
+                    BUser_Role_OwnedEntity.addRole(aux, (r as BRole), oEntity)
                 }
                 else{
                     ctrl = true
@@ -124,7 +130,7 @@ class UserService {
         }
         else {
             if(aux.roles){
-                BUser_Role.removeAllRolesFrom(aux)
+                BUser_Role_OwnedEntity.removeAllRolesFrom(aux, oEntity)
             }
         }
 
@@ -158,7 +164,7 @@ class UserService {
     def delete(long id) {
         def e = EUser.get(id)
         if(e){
-            BUser_Role.removeAllRolesFrom(e)
+            BUser_Role_OwnedEntity.removeAllRolesFromAll(e)
             e.delete()
             return true
         }
@@ -170,14 +176,20 @@ class UserService {
     /**
      * Returns all roles associated to a user
      * @param id User's id
+     * @param entity Owned entity's id over the roles are assigned to this user
      * @param params [optional] Parameters for paging the result
      * @return A json containing a list of roles with the following structure if the operation was successful
      * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
      */
-    def roles(long id, params){
+    def roles(long id, long entity, Map params){
+        def e = EOwnedEntity.get(entity)
+        if(!e){
+            //todo: inform error, entity isn't present
+            return false
+        }
         Map response = [:]
         def mapped = []
-        def list = BUser_Role.getRolesByUser(id, params)
+        def list = BUser_Role_OwnedEntity.getRolesByUser(id, entity, params)
         list.each{
             mapped << new RoleBean(id: it.id, label: it.label, description: it.description, enabled: it.enabled)
         }
@@ -208,10 +220,10 @@ class UserService {
         return u
     }
 
-    def addDefaultRoleToUser(Object u){
+    def addDefaultRoleToUser(Object u, Object oe){
         def r = BRole.findByLabel('ROLE_ADMIN')
         if(r){
-            BUser_Role.addRole((u as EUser), (r as BRole))
+            BUser_Role_OwnedEntity.addRole((u as EUser), (r as BRole), (oe as EOwnedEntity))
         }
     }
 }

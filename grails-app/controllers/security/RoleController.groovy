@@ -93,10 +93,10 @@ class RoleController {
     @Secured("hasRole('READ_ROLE')")
     def show(long id){
         def body = ['success' : false]
-        def e = roleService.show(id);
+        def e = roleService.show(id)
         if(e){
-            body.success = true;
-            body.item = e;
+            body.success = true
+            body.item = e
         }
         render body as JSON
     }

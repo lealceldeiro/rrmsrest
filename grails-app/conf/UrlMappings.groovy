@@ -14,7 +14,7 @@ class UrlMappings {
                 //USER...
                 "/api/user"                     (controller: "user")                            {action= [GET: "search", PUT: "create"]}
                 "/api/user/$id"                 (controller: "user")                            {action= [GET: "show", POST: "update", DELETE: "delete"]}
-                "/api/user/$id/roles"           (controller: "user", action: "roles")
+                "/api/user/$id/$entity/roles"   (controller: "user", action: "roles")
 
                 //ROLE...
                 "/api/role"                     (controller: "role")                            {action= [GET: "search", PUT: "create"]}
@@ -24,7 +24,9 @@ class UrlMappings {
                 //PERMISSION
                 "/api/permission"               (controller: "permission")                      {action= [GET: "search"]}
 
-
+                //CONFIGURATION
+                "/api/config/entity/last"       (controller: "configuration", action: "lastAccessedOwnedEntity")
+                
                 //default
                 "/"(view:"/index")
                 "500"(view:'/error')

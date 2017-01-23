@@ -24,6 +24,11 @@ class UserCommand {
     })
     List<Long> roles
 
+    /**
+     * Entity over which the user will have the permissions (roles)s
+     */
+    long entity
+
     static constraints = {
         username nullable: false, blank: false
         email nullable: true, blank: false
@@ -31,10 +36,11 @@ class UserCommand {
         password nullable: false, blank: false
         roles nullable: false
         enabled nullable: true
+        entity nullable: false
     }
 
     def call(){
-        //roles are not added here, but in the controller, using the BUser_Role domain class
+        //roles are not added here, but in the controller, using the BUser_Role_OwnedEntity domain class
         EUser u = new EUser(username: username, email: email, name: name, password: password, enabled: true)
         u.id = id
         return u

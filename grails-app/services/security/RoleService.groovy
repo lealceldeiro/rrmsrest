@@ -136,7 +136,7 @@ class RoleService {
     def delete(long id) {
         def e = BRole.get(id)
         if(e){
-            def ur = BUser_Role.findByRole(e)
+            def ur = BUser_Role_OwnedEntity.findByRole(e)
             if(!ur){
                 BRole_Permission.removeAllPermissionsFrom(e)
                 e.delete()

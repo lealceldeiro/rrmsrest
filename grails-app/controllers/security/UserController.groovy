@@ -98,10 +98,10 @@ class UserController{
     @Secured("hasRole('READ_USER')")
     def show(long id){
         def body = ['success' : false]
-        def e = userService.show(id);
+        def e = userService.show(id)
         if(e){
-            body.success = true;
-            body.item = e;
+            body.success = true
+            body.item = e
         }
         render body as JSON
     }
@@ -132,7 +132,7 @@ class UserController{
             body.id = id
 
             if(markDefaultAdminAsUnset){
-                configurationService.unSetupDefaultAdmin()
+                configurationService.setDefaultAdminUnSetUp()
             }
         }
         render body as JSON
@@ -145,10 +145,10 @@ class UserController{
      * @return A <code>List</code> of roles
      */
     @Secured("hasRole('READ_USER')")
-    def roles(long id){
+    def roles(long id, long entity){
         def body = ['success': false]
         if(id){
-            final r = userService.roles(id, params)
+            final r = userService.roles(id, entity, params)
             if(r){
                 body.success = true
                 body.items = r['items']

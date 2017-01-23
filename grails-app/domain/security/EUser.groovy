@@ -1,5 +1,6 @@
 package security
 
+import configuration.ConfigurationService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -22,7 +23,7 @@ class EUser implements Serializable {
 
     static transients = ['authorities', 'springSecurityService']
 
-    static hasMany = [roles: BUser_Role]
+    static hasMany = [roles: BUser_Role_OwnedEntity]
 
     static constraints = {
         username nullable: false, unique: true, blank: false
@@ -35,8 +36,9 @@ class EUser implements Serializable {
     static mapping = {password column: '`password`'}
 
     Set<BPermission> getAuthorities(){
+        def oe = ConfigurationService.getLastAccessedOwnedEntity()
         Set<BPermission> a = []
-        def roles = BUser_Role.getRolesByUser(this.id, [:])
+        def roles = BUser_Role_OwnedEntity.getRolesByUser(this.id, oe, [:])
 
         def permissions
         roles.each {
