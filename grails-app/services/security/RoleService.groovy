@@ -22,7 +22,7 @@ class RoleService {
         Map response = [:]
 
         def list = BRole.createCriteria().list(params) {
-            order("enabled", "desc")
+            order("enabled", "asc")
             if(cmd.q) {
                 or{
                     ilike("label", "%${cmd.q}%")
@@ -158,7 +158,7 @@ class RoleService {
      * @return A json containing a list of permissions with the following structure if the operation was successful
      * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
      */
-    def permissions(long id, params){
+    def permissions(long id, Map params){
         Map response = [:]
         def mapped = []
         def list = BRole_Permission.getPermissionsByRole(id, params)

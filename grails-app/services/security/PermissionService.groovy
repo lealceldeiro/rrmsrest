@@ -34,7 +34,7 @@ class PermissionService {
         Map response = [:]
 
         def list = BPermission.createCriteria().list(params) {
-            order("label", "desc")
+            order("label", "asc")
             if(cmd.q) {
                 or{
                     ilike("label", "%${cmd.q}%")

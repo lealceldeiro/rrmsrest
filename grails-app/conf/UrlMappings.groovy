@@ -15,14 +15,24 @@ class UrlMappings {
                 "/api/user"                     (controller: "user")                            {action= [GET: "search", PUT: "create"]}
                 "/api/user/$id"                 (controller: "user")                            {action= [GET: "show", POST: "update", DELETE: "delete"]}
                 "/api/user/$id/$entity/roles"   (controller: "user", action: "roles")
+                "/api/user/$id/entities"        (controller: "user", action: "entities")
+                "/api/user/get/$username"       (controller: "user", action: "getByUsername")
 
                 //ROLE...
                 "/api/role"                     (controller: "role")                            {action= [GET: "search", PUT: "create"]}
                 "/api/role/$id"                 (controller: "role")                            {action= [GET: "show", POST: "update", DELETE: "delete"]}
                 "/api/role/$id/permissions"     (controller: "role", action: "permissions")
 
-                //PERMISSION
+                 //PERMISSION
                 "/api/permission"               (controller: "permission")                      {action= [GET: "search"]}
+
+
+                //OWNED_ENTITY...
+                "/api/entity/user/$uid"         (controller: "ownedEntity")                     {action= [GET: "search", PUT: "create"]}
+                "/api/entity"                   (controller: "ownedEntity")                     {action= [GET: "sea     rchAll"]}
+                "/api/entity/$id"               (controller: "ownedEntity")                     {action= [GET: "show", POST: "update", DELETE: "delete"]}
+                "/api/entity/$id/users"         (controller: "ownedEntity", action: "users")
+
 
                 //CONFIGURATION
                 "/api/config/entity/last"       (controller: "configuration", action: "lastAccessedOwnedEntity")

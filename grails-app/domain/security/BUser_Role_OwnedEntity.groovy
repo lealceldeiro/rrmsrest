@@ -92,7 +92,7 @@ class BUser_Role_OwnedEntity implements Serializable{
      * @param params filter params
      * @return
      */
-    static def getRolesByUser(Long id, Long ownedEntityId, Map params){
+    static def getRolesByUser(long id, long ownedEntityId, Map params){
         createCriteria().list(params) {
 
             projections {
@@ -109,6 +109,39 @@ class BUser_Role_OwnedEntity implements Serializable{
                 }
             }
 
+        }
+    }
+
+    /**
+     * Returns all ownedEntity's users in a specific entity
+     * @param id ownedEntity's id
+     * @param params filter params
+     * @return
+     */
+    static def getUsersByOwnedEntity(long id, Map params){
+        createCriteria().list(params) {
+            projections {
+                property("user")
+            }
+            ownedEntity {
+                eq "id", id
+            }
+        }
+    }
+    /**
+     * Returns all user's owned entities for a specific user
+     * @param id user's id
+     * @param params filter params
+     * @return
+     */
+    static def getOwnedEntitiesByUser(long id, Map params){
+        createCriteria().list(params) {
+            projections {
+                property("ownedEntity")
+            }
+            user {
+                eq "id", id
+            }
         }
     }
 }

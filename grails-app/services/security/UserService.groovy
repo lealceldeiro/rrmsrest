@@ -23,7 +23,7 @@ class UserService {
         Map response = [:]
 
         def list = EUser.createCriteria().list(params) {
-            order("username", "desc")
+            order("username", "asc")
             if(cmd.q) {
                 or{
                     ilike("username", "%${cmd.q}%")
@@ -151,6 +151,20 @@ class UserService {
             if(i){
                 return new UserBean(username: i.username, email: i.email, name: i.name, enabled: i.enabled)
             }
+        }
+        //todo: inform about the error
+        return false
+    }
+
+    /**
+     * Shows some User's info
+     * @param username Identifier of the user that is going to be shown
+     * @return A UserBean entity with the user's info or false if none user is found
+     */
+    def getByUsername (String username){
+        def e = EUser.findByUsername(username)
+        if(e){
+            return new UserBean(id: e.id, username: e.username, email: e.email, name: e.name, enabled: e.enabled)
         }
         //todo: inform about the error
         return false

@@ -13,13 +13,17 @@ class UserController{
 
     def configurationService
 
+    def ownedEntityService
+
     static allowedMethods = [
             search          : HttpMethod.GET.name(),
             create          : HttpMethod.PUT.name(),
             update          : HttpMethod.POST.name(),
             show            : HttpMethod.GET.name(),
             delete          : HttpMethod.DELETE.name(),
-            roles           : HttpMethod.GET.name()
+            roles           : HttpMethod.GET.name(),
+            getByUsername   : HttpMethod.GET.name(),
+            entities   : HttpMethod.GET.name()
     ]
 
     //region CRUD
@@ -139,6 +143,25 @@ class UserController{
     }
     //endregion
 
+
+    /**
+     * Return a user's info
+     * @param username User's identifier
+     * @return A json containing the user's info if the operation was successful with the following structure
+     * <p><code>{success: true|false, item:{<param1>,...,<paramN>}}</code></p>
+     */
+    @Secured("hasRole('READ_USER')")
+    def getByUsername(String username){
+        def body = ['success' : false]
+        def e = userService.getByUsername(username)
+        if(e){
+            body.success = true
+            body.item = e
+        }
+        render body as JSON
+    }
+
+
     /**
      * Returns a user's roles by its id
      * @param id user's id
@@ -149,6 +172,26 @@ class UserController{
         def body = ['success': false]
         if(id){
             final r = userService.roles(id, entity, params)
+            if(r){
+                body.success = true
+                body.items = r['items']
+                body.total = r['total']
+            }
+        }
+        render body as JSON
+    }
+
+    /**
+     * Returns a user's entities by its id
+     * @param id user's id
+     * @return A <code>List</code> of entities
+     */
+    @Secured("hasRole('READ_USER', 'READ_OWNED_ENTITY')")
+    def entities(long id){
+        def body = ['success': false]
+        SearchCommand cmd = new SearchCommand()
+        if(id){
+            final r = ownedEntityService.search(cmd, params)
             if(r){
                 body.success = true
                 body.items = r['items']
