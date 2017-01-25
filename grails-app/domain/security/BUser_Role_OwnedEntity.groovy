@@ -1,5 +1,7 @@
 package security
 
+import command.SearchCommand
+
 class BUser_Role_OwnedEntity implements Serializable{
 
     EUser user
@@ -39,7 +41,7 @@ class BUser_Role_OwnedEntity implements Serializable{
     }
 
     /**
-     * Remove a specific roles from a user over an entity
+     * Removes a specific roles from a user over an entity
      * @param user User to remove roles from
      * @param role Role to be removed
      * @param ownedEntity Entity to remove roles from
@@ -64,6 +66,7 @@ class BUser_Role_OwnedEntity implements Serializable{
                 [user: user, roles: roles, entity: ownedEntity]
         )
     }
+
     /**
      * Removes all Roles from an users over an specific entity
      * @param User user to remove roles from
@@ -76,6 +79,7 @@ class BUser_Role_OwnedEntity implements Serializable{
                 [user: user, entity: ownedEntity]
         )
     }
+
     /**
      * Removes all Roles from an users over all entities
      * @param User user to remove roles from
@@ -87,60 +91,106 @@ class BUser_Role_OwnedEntity implements Serializable{
 
     /**
      * Returns all user's roles in a specific entity
-     * @param id user's id
-     * @param ownedEntityId Owned entity id
+     * @param uid user's id
+     * @param eid Owned entity id
      * @param params filter params
      * @return
      */
-    static def getRolesByUser(long id, long ownedEntityId, Map params){
+    static def getRolesByUserByOwnedEntity(long uid, long eid, Map params, SearchCommand cmd = null){
         createCriteria().list(params) {
 
             projections {
-                property("role")
+                distinct("role")
+//                order("label", "asc")
+//                order("description", "asc")
             }
 
+            //for this specific user
             user {
-                eq "id", id
+                eq "id", uid
             }
 
-            if(ownedEntityId != null){
+            //for this specific entity
+            if(eid != null){
                 ownedEntity {
-                    eq "id", ownedEntityId
+                    eq "id", eid
                 }
             }
 
+            role {
+
+                //filter for searching
+                if(cmd?.q){
+                    or{
+                        ilike("label", "%${cmd.q}%")
+                        ilike("description", "%${cmd.q}%")
+                    }
+                }
+            }
         }
     }
 
     /**
      * Returns all ownedEntity's users in a specific entity
-     * @param id ownedEntity's id
+     * @param eid ownedEntity's id
      * @param params filter params
      * @return
      */
-    static def getUsersByOwnedEntity(long id, Map params){
+    static def getUsersByOwnedEntity(long eid, Map params, SearchCommand cmd = null){
         createCriteria().list(params) {
             projections {
-                property("user")
+                distinct("user")
+//                order("name", "asc")
+//                order("username", "asc")
+//                order("email", "asc")
             }
+
+            //for this specific entity
             ownedEntity {
-                eq "id", id
+                eq "id", eid
+            }
+
+            user {
+                //filter for searching
+                if(cmd?.q){
+                    or{
+                        ilike("username", "%${cmd.q}%")
+                        ilike("name", "%${cmd.q}%")
+                        ilike("email", "%${cmd.q}%")
+                    }
+                }
             }
         }
     }
+
     /**
      * Returns all user's owned entities for a specific user
      * @param id user's id
      * @param params filter params
      * @return
      */
-    static def getOwnedEntitiesByUser(long id, Map params){
+    static def getOwnedEntitiesByUser(long id, Map params, SearchCommand cmd = null){
         createCriteria().list(params) {
             projections {
-                property("ownedEntity")
+                distinct("ownedEntity")
+//                order("name", "asc")
+//                order("username", "asc")
             }
+
+            //for this specific user
             user {
                 eq "id", id
+            }
+
+            ownedEntity {
+                //filter for searching
+                if(cmd?.q){
+                    or{
+                        ilike("username", "%${cmd.q}%")
+                        ilike("name", "%${cmd.q}%")
+                    }
+
+                }
             }
         }
     }

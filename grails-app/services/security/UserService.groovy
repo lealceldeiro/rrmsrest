@@ -189,21 +189,21 @@ class UserService {
 
     /**
      * Returns all roles associated to a user
-     * @param id User's id
-     * @param entity Owned entity's id over the roles are assigned to this user
+     * @param uid User's id
+     * @param eid Owned entity's id over the roles are assigned to this user
      * @param params [optional] Parameters for paging the result
      * @return A json containing a list of roles with the following structure if the operation was successful
      * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
      */
-    def roles(long id, long entity, Map params){
-        def e = EOwnedEntity.get(entity)
+    def roles(long uid, long eid, Map params){
+        def e = EOwnedEntity.get(eid)
         if(!e){
             //todo: inform error, entity isn't present
             return false
         }
         Map response = [:]
         def mapped = []
-        def list = BUser_Role_OwnedEntity.getRolesByUser(id, entity, params)
+        def list = BUser_Role_OwnedEntity.getRolesByUserByOwnedEntity(uid, eid, params)
         list.each{
             mapped << new RoleBean(id: it.id, label: it.label, description: it.description, enabled: it.enabled)
         }

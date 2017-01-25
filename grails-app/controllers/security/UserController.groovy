@@ -17,25 +17,48 @@ class UserController{
 
     static allowedMethods = [
             search          : HttpMethod.GET.name(),
+            searchAll       : HttpMethod.GET.name(),
             create          : HttpMethod.PUT.name(),
             update          : HttpMethod.POST.name(),
             show            : HttpMethod.GET.name(),
             delete          : HttpMethod.DELETE.name(),
             roles           : HttpMethod.GET.name(),
             getByUsername   : HttpMethod.GET.name(),
-            entities   : HttpMethod.GET.name()
+            entities        : HttpMethod.GET.name()
     ]
 
     //region CRUD
     /**
-     * Searches for users which match with the specified params
+     * Searches for users by entity which match with the specified params
+     * @param cmd Search criteria:
+     *                              q: Criteria for searching the users
+     * @param eid Entity's id which is associated to users who are going to be searched
+     * @return A json containing the user's info if the operation was successful with the following structure
+     * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
+     */
+    @Secured("hasRole('READ_USER')")
+    def search(SearchCommand cmd, long eid) {
+        def body = ['success': false]
+        if(cmd.validate()){
+            def result = ownedEntityService.getUsersByOwnedEntity(eid, params, cmd)
+
+            body.success = true
+            body.total = result['total']
+            body.items = result['items']
+        }
+
+        render body as JSON
+    }
+
+    /**
+     * Searches for all users which match with the specified params
      * @param cmd Search criteria:
      *                              q: Criteria for searching the users
      * @return A json containing the user's info if the operation was successful with the following structure
      * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
-    @Secured("hasRole('READ_USER')")
-    def search(SearchCommand cmd) {
+    @Secured("hasRole('READ_USER') and hasRole('READ_ALL_USER')")
+    def searchAll(SearchCommand cmd) {
         def body = ['success': false]
         if(cmd.validate()){
             def result = userService.search(cmd, params)
@@ -168,10 +191,10 @@ class UserController{
      * @return A <code>List</code> of roles
      */
     @Secured("hasRole('READ_USER')")
-    def roles(long id, long entity){
+    def roles(long id, long eid){
         def body = ['success': false]
         if(id){
-            final r = userService.roles(id, entity, params)
+            final r = userService.roles(id, eid, params)
             if(r){
                 body.success = true
                 body.items = r['items']

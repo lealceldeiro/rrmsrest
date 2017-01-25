@@ -158,15 +158,15 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 ]
 
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-        '/'              : ['permitAll'],
-        '/index'         : ['permitAll'],
-        '/index.gsp'     : ['permitAll'],
-        '/assets/**'     : ['permitAll'],
-        '/partials/**'   : ['permitAll'],
-        '/apiDoc/**'     : ['permitAll'],
-        '/**/js/**'      : ['permitAll'],
-        '/**/css/**'     : ['permitAll'],
-        '/**/images/**'  : ['permitAll'],
-        '/**/favicon.ico': ['permitAll'],
-        '/api/login': ['permitAll']
+        '/'                 : ['permitAll'],
+        '/index'            : ['permitAll'],
+        '/index.gsp'        : ['permitAll'],
+        '/assets/**'        : ['permitAll'],
+        '/partials/**'      : ['permitAll'],
+        '/apiDoc/**'        : ['permitAll'],
+        '/**/js/**'         : ['permitAll'],
+        '/**/css/**'        : ['permitAll'],
+        '/**/images/**'     : ['permitAll'],
+        '/**/favicon.ico'   : ['permitAll'],
+        '/api/login'        : ['permitAll']
 ]

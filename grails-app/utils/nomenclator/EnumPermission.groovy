@@ -8,6 +8,7 @@ enum EnumPermission {
     MANAGE_USER,
         CREATE_USER,
         READ_USER,
+        READ_ALL_USER,
         UPDATE_USER,
         DELETE_USER,
 
@@ -15,6 +16,7 @@ enum EnumPermission {
     MANAGE_ROLE,
         CREATE_ROLE,
         READ_ROLE,
+        READ_ALL_ROLE,
         UPDATE_ROLE,
         DELETE_ROLE,
 

@@ -38,7 +38,7 @@ class EUser implements Serializable {
     Set<BPermission> getAuthorities(){
         def oe = ConfigurationService.getLastAccessedOwnedEntity()
         Set<BPermission> a = []
-        def roles = BUser_Role_OwnedEntity.getRolesByUser(this.id, oe, [:])
+        def roles = BUser_Role_OwnedEntity.getRolesByUserByOwnedEntity(this.id, oe, [:])
 
         def permissions
         roles.each {

@@ -11,8 +11,11 @@ class RoleController {
 
     def roleService
 
+    def ownedEntityService
+
     static allowedMethods = [
             search          : HttpMethod.GET.name(),
+            searchAll       : HttpMethod.GET.name(),
             create          : HttpMethod.PUT.name(),
             update          : HttpMethod.POST.name(),
             show            : HttpMethod.GET.name(),
@@ -29,7 +32,29 @@ class RoleController {
      * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
      */
     @Secured("hasRole('READ_ROLE')")
-    def search(SearchCommand cmd) {
+    def search(SearchCommand cmd, long uid, long eid) {
+        def body = ['success': false]
+        if(cmd.validate()){
+            def result = ownedEntityService.getRolesByUserAndOwnedEntity(uid, eid, params, cmd)
+
+            body.success = true
+            body.total = result['total']
+            body.items = result['items']
+        }
+
+
+        render body as JSON
+    }
+
+    /**
+     * Searches for all roles which match with the specified params
+     * @param cmd Search criteria:
+     *                              q: Criteria for searching the roles
+     * @return A json containing the roles' info if the operation was successful with the following structure
+     * <p><code>{success: true|false, items:[{<param1>,...,<paramN>}}]</code></p>
+     */
+    @Secured("hasRole('READ_ROLE') and hasRole('READ_ALL_ROLE')")
+    def searchAll(SearchCommand cmd) {
         def body = ['success': false]
         if(cmd.validate()){
             def result = roleService.search(cmd, params)

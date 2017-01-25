@@ -4,6 +4,8 @@ import command.SearchCommand
 import command.security.ownedentity.OwnedEntityCommand
 import grails.transaction.Transactional
 import mapping.security.OwnedEntityBean
+import mapping.security.RoleBean
+import mapping.security.UserBean
 
 @Transactional
 class OwnedEntityService {
@@ -185,17 +187,37 @@ class OwnedEntityService {
 
     /**
      * Returns all users associated to an entity
-     * @param id Entity's id
+     * @param eid Entity's id
      * @param params [optional] Parameters for paging the result
      * @return A json containing a list of users with the following structure if the operation was successful
      * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
      */
-    def getUsersByOwnedEntity(long id, Map params){
+    def getUsersByOwnedEntity(long eid, Map params, SearchCommand cmd = null){
         Map response = [:]
         def mapped = []
-        def list = BUser_Role_OwnedEntity.getUsersByOwnedEntity(id, params)
+        def list = BUser_Role_OwnedEntity.getUsersByOwnedEntity(eid, params, cmd)
         list.each{
-            mapped << new OwnedEntityBean(id: it.id, name: it.name, username: it.username)
+            mapped << new UserBean(id: it.id, name: it.name, username: it.username, email: it.email, enabled: it.enabled)
+        }
+
+        response.items = mapped
+        response.total = list.totalCount ? list.totalCount : 0
+        return response
+    }
+    /**
+     * Returns all roles associated to a user over an entity
+     * @param uid User's id
+     * @param eid Entity's id
+     * @param params [optional] Parameters for paging the result
+     * @return A json containing a list of users with the following structure if the operation was successful
+     * <p><code>{success: true|false, items:[<it1>,...,<itn>], total: <totalCount>}</code></p>
+     */
+    def getRolesByUserAndOwnedEntity(long uid, long eid, Map params, SearchCommand cmd = null){
+        Map response = [:]
+        def mapped = []
+        def list = BUser_Role_OwnedEntity.getRolesByUserByOwnedEntity(uid, eid, params, cmd)
+        list.each{
+            mapped << new RoleBean(id: it.id, label: it.label, description: it.description)
         }
 
         response.items = mapped

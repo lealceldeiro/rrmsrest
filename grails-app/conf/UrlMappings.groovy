@@ -10,16 +10,17 @@ class UrlMappings {
                 }
 
 
-
                 //USER...
-                "/api/user"                     (controller: "user")                            {action= [GET: "search", PUT: "create"]}
+                "/api/user"                     (controller: "user")                            {action= [GET: "searchAll", PUT: "create"]}
+                "/api/user/entity/$eid"         (controller: "user", action: "search")
                 "/api/user/$id"                 (controller: "user")                            {action= [GET: "show", POST: "update", DELETE: "delete"]}
-                "/api/user/$id/$entity/roles"   (controller: "user", action: "roles")
+                "/api/user/$id/$eid/roles"      (controller: "user", action: "roles")
                 "/api/user/$id/entities"        (controller: "user", action: "entities")
                 "/api/user/get/$username"       (controller: "user", action: "getByUsername")
 
                 //ROLE...
-                "/api/role"                     (controller: "role")                            {action= [GET: "search", PUT: "create"]}
+                "/api/role"                     (controller: "role")                            {action= [GET: "searchAll", PUT: "create"]}
+                "/api/role/$uid/$eid"           (controller: "role", action: "search")
                 "/api/role/$id"                 (controller: "role")                            {action= [GET: "show", POST: "update", DELETE: "delete"]}
                 "/api/role/$id/permissions"     (controller: "role", action: "permissions")
 
