@@ -23,7 +23,10 @@ class UserService {
         Map response = [:]
 
         def list = EUser.createCriteria().list(params) {
+            order("enabled", "asc")
             order("username", "asc")
+            order("name", "asc")
+            order("email", "asc")
             if(cmd.q) {
                 or{
                     ilike("username", "%${cmd.q}%")

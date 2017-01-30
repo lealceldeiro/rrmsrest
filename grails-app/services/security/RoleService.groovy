@@ -22,7 +22,9 @@ class RoleService {
         Map response = [:]
 
         def list = BRole.createCriteria().list(params) {
-            order("enabled", "asc")
+            order("enabled", "desc")
+            order("label", "asc")
+            order("description", "asc")
             if(cmd.q) {
                 or{
                     ilike("label", "%${cmd.q}%")

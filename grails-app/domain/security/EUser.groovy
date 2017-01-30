@@ -42,12 +42,13 @@ class EUser implements Serializable {
 
         def permissions
         roles.each {
-            it ->
+            if(it.enabled){
                 permissions = BRole_Permission.getPermissionsByRole((it.id as Long), [:])
                 permissions.each {
                     p ->
                         a << new BPermission(name: p.name, label: p.label, id: p.id)
                 }
+            }
         }
 
         return a

@@ -99,16 +99,10 @@ class BUser_Role_OwnedEntity implements Serializable{
     static def getRolesByUserByOwnedEntity(long uid, long eid, Map params, SearchCommand cmd = null){
         createCriteria().list(params) {
 
-            projections {
-                distinct("role")
-//                order("label", "asc")
-//                order("description", "asc")
-            }
+            projections { property("role") }
 
             //for this specific user
-            user {
-                eq "id", uid
-            }
+            user { eq "id", uid }
 
             //for this specific entity
             if(eid != null){
@@ -118,16 +112,20 @@ class BUser_Role_OwnedEntity implements Serializable{
             }
 
             role {
-
+                order("label", "asc")
+                order("description", "asc")
                 //filter for searching
-                if(cmd?.q){
-                    or{
+                if(cmd?.q) {
+                    or {
                         ilike("label", "%${cmd.q}%")
                         ilike("description", "%${cmd.q}%")
                     }
                 }
             }
-        }
+        }.unique {it.id}
+
+        /*list.metaClass.totalCount = list.size()
+        return list*/
     }
 
     /**
@@ -137,20 +135,17 @@ class BUser_Role_OwnedEntity implements Serializable{
      * @return
      */
     static def getUsersByOwnedEntity(long eid, Map params, SearchCommand cmd = null){
-        createCriteria().list(params) {
-            projections {
-                distinct("user")
-//                order("name", "asc")
-//                order("username", "asc")
-//                order("email", "asc")
-            }
+        def list = createCriteria().list(params) {
+            projections { property("user") }
 
             //for this specific entity
-            ownedEntity {
-                eq "id", eid
-            }
+            ownedEntity { eq "id", eid }
 
             user {
+                order("name", "asc")
+                order("username", "asc")
+                order("email", "asc")
+
                 //filter for searching
                 if(cmd?.q){
                     or{
@@ -160,7 +155,10 @@ class BUser_Role_OwnedEntity implements Serializable{
                     }
                 }
             }
-        }
+        }.unique {it.id}
+
+        list.metaClass.totalCount = list.size()
+        return list
     }
 
     /**
@@ -171,18 +169,14 @@ class BUser_Role_OwnedEntity implements Serializable{
      */
     static def getOwnedEntitiesByUser(long id, Map params, SearchCommand cmd = null){
         createCriteria().list(params) {
-            projections {
-                distinct("ownedEntity")
-//                order("name", "asc")
-//                order("username", "asc")
-            }
+            projections { property("ownedEntity") }
 
             //for this specific user
-            user {
-                eq "id", id
-            }
+            user { eq "id", id }
 
             ownedEntity {
+                order("name", "asc")
+                order("username", "asc")
                 //filter for searching
                 if(cmd?.q){
                     or{

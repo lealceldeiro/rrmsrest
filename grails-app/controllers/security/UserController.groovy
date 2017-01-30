@@ -173,7 +173,7 @@ class UserController{
      * @return A json containing the user's info if the operation was successful with the following structure
      * <p><code>{success: true|false, item:{<param1>,...,<paramN>}}</code></p>
      */
-    @Secured("hasRole('READ_USER')")
+    @Secured("hasAnyRole('READ_USER', 'READ_PROFILE')")
     def getByUsername(String username){
         def body = ['success' : false]
         def e = userService.getByUsername(username)

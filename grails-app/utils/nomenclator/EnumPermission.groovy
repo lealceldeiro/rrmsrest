@@ -35,4 +35,9 @@ enum EnumPermission {
         UPDATE_OWNED_ENTITY,
         DELETE_OWNED_ENTITY,
 
+    /*PROFILE*/
+    MANAGE_PROFILE,
+        READ_PROFILE,
+
+
 }

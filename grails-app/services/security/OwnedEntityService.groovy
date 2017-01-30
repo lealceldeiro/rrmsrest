@@ -37,6 +37,8 @@ class OwnedEntityService {
 
         def list = EOwnedEntity.createCriteria().list(params) {
             order("enabled", "asc")
+            order("username", "asc")
+            order("name", "asc")
             if(cmd.q) {
                 or{
                     ilike("name", "%${cmd.q}%")

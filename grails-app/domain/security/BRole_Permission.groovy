@@ -44,12 +44,15 @@ class BRole_Permission implements Serializable{
     static def getPermissionsByRole(Long id, Map params){
         createCriteria().list(params) {
 
-            projections {
-                property("permission")
-            }
+            projections { property("permission") }
 
             role {
                 eq "id", id
+            }
+
+            permission {
+                order("label", "asc")
+                order("name", "asc")
             }
 
         }
