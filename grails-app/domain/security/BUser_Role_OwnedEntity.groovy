@@ -135,15 +135,16 @@ class BUser_Role_OwnedEntity implements Serializable{
      * @return
      */
     static def getUsersByOwnedEntity(long eid, Map params, SearchCommand cmd = null){
-        def list = createCriteria().list(params) {
+        def list = createCriteria().list() {
             projections { property("user") }
 
             //for this specific entity
             ownedEntity { eq "id", eid }
 
             user {
-                order("name", "asc")
+                order("enabled", "asc")
                 order("username", "asc")
+                order("name", "asc")
                 order("email", "asc")
 
                 //filter for searching
@@ -155,10 +156,27 @@ class BUser_Role_OwnedEntity implements Serializable{
                     }
                 }
             }
-        }.unique {it.id}
+        }
 
-        list.metaClass.totalCount = list.size()
-        return list
+        list = list.unique {
+            it.id
+        }
+
+        int s = list.size()
+        int offset = params?.offset ? params?.offset as int: 0
+        int max = (params?.max ? (params?.max as int) : s) + offset
+        if(max > s){
+            max = s
+        }
+
+        def aux = []
+        for(int i = offset; i < max; i++){
+            aux << list.get(i)
+        }
+
+        aux.metaClass.totalCount = list.size()
+
+        return aux
     }
 
     /**
